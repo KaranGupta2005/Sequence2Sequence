@@ -1,5 +1,10 @@
 """
-Vocabulary building and text processing utilities for the Seq2Seq model.
+Improved vocabulary building and text processing utilities.
+
+Improvements:
+- Better tokenization (handles punctuation as separate tokens)
+- Handles French special characters properly
+- Supports reverse vocab lookup
 """
 
 import re
@@ -10,14 +15,20 @@ from typing import List, Tuple, Dict
 
 def clean_text(text: str) -> str:
     """Clean and normalize text for the model."""
-    text = text.lower()
-    text = re.sub(r"[^a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ0-9?.!,'\- ]+", " ", text)
+    text = text.lower().strip()
+    # Separate punctuation from words (but keep apostrophes in contractions)
+    text = re.sub(r"([?.!,;:])", r" \1 ", text)
+    # Handle French contractions - keep l', d', j', etc. attached
+    text = re.sub(r"(\w)'(\w)", r"\1'\2", text)
+    # Remove any character that's not alphanumeric, French chars, punctuation, or space
+    text = re.sub(r"[^a-zA-ZàâäéèêëïîôùûüÿçœæÀÂÄÉÈÊËÏÎÔÙÛÜŸÇŒÆ0-9?.!,;:'\- ]", " ", text)
+    # Collapse multiple spaces
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 
 def tokenize(text: str) -> List[str]:
-    """Simple whitespace tokenizer."""
+    """Whitespace tokenizer."""
     return text.split()
 
 
@@ -35,7 +46,7 @@ def build_vocab(sentences: List[str], min_freq: int = 2) -> Dict[str, int]:
     }
 
     idx = 4
-    for word, freq in counter.items():
+    for word, freq in counter.most_common():
         if freq >= min_freq:
             vocab[word] = idx
             idx += 1
