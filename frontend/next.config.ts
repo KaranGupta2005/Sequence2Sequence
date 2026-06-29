@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: process.env.FIREBASE_DEPLOY ? 'export' : 'standalone',
   async rewrites() {
     const apiUrl = process.env.INTERNAL_API_URL || 'http://127.0.0.1:8000';
     return [

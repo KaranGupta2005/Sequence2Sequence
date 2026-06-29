@@ -44,7 +44,8 @@ export default function TranslatorSection() {
     setError(null);
 
     try {
-      const response = await fetch('/api/translate', {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
+      const response = await fetch(`${apiBase}/api/translate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: textToTranslate, max_length: 50 }),
