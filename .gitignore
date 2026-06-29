@@ -12,6 +12,14 @@ backend/weights/*.pt
 backend/weights/*.json
 backend/data/fra.txt
 
+# Environment files
+.env
+.env.local
+.env.*
+
+# Training notebook (private)
+colab_train.ipynb
+
 # Node
 frontend/node_modules/
 frontend/.next/
