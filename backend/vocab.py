@@ -12,6 +12,11 @@ from typing import List, Tuple, Dict
 def clean_text(text: str) -> str:
     """Clean text - matches training preprocessing exactly."""
     text = text.lower().strip()
+    # Separate punctuation from words (matches Kaggle training)
+    text = re.sub(r"([?.!,;:])", r" \1 ", text)
+    # Keep apostrophes in contractions
+    text = re.sub(r"(\w)'(\w)", r"\1'\2", text)
+    # Remove chars that aren't alphanumeric, accented, punctuation, or space
     text = re.sub(r"[^a-zA-Z\u00C0-\u017F0-9?.!,;:'\- ]+", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text

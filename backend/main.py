@@ -140,6 +140,15 @@ def translate_sentence(sentence: str, max_length: int = 30) -> tuple:
             input_token = torch.tensor([pred], dtype=torch.long).to(device)
 
     translated = " ".join([inv_en_vocab.get(i, "<unk>") for i in outputs])
+
+    # Post-processing: remove consecutive duplicate words
+    words = translated.split()
+    cleaned_words = []
+    for i, w in enumerate(words):
+        if i == 0 or w != words[i - 1]:
+            cleaned_words.append(w)
+    translated = " ".join(cleaned_words)
+
     return translated, cleaned
 
 
