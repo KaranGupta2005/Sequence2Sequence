@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: seq2seq-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    region: oregon
+    plan: free
+    envVars:
+      - key: WEIGHTS_DIR
+        value: weights
