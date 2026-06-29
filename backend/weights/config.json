@@ -1,0 +1,10 @@
+{
+  "embed_dim": 256,
+  "hidden_dim": 512,
+  "n_layers": 2,
+  "dropout": 0.3,
+  "bidirectional": true,
+  "fr_vocab_size": 21107,
+  "en_vocab_size": 12041,
+  "max_length": 20
+}
